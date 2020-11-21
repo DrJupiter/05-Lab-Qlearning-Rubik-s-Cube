@@ -12,12 +12,69 @@ actions = ['left', 'right', 'front', 'back', 'top', 'bottom', 'c_left', 'c_right
 q_table = defaultdict(lambda: np.array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]))
 
 
+
+### Somthing somthing
+
+V = [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]
+
+gamma = 0.9
+
+def Fat(stat):
+    nxt_move = []
+    for i in range(12)
+        nxt_move[i] = current_state.move(actions[i])
+
+
+def Red(stat):
+    if stat == 0:
+        return 1
+    else:
+        return -1
+
+
+for t in range(1000):
+    # Loop over all states
+    for s in range(6):
+        # Update value
+        V[s] = Red(s)+max([gamma*V[sp] for sp in F[s]])
+
+print(V)
+
+
+###
+
+
+
+
 def r(s,a):
     tmp_s = move(s, a)
     if tmp_s.isGoalState():
         return 10
     else:
         return -1
+###
+reward_ex=-1
+gamma_ex) 0.9
+for _ in range(10):
+    for s in range(12):
+        for r,sp in zip(F[s])
+            q[s] = max(reward_ex+gamma_ex*q[sp])
+
+# F = Next step table
+    # altså hvor man næste gang ender
+        # Vi må beskrive dette på en eller anden måde. måske muligt at få den til at gøre det inplicit
+        # da den kan finde det næste stadie og "hash" det, og dermed finde dens værdi
+
+"""
+# 1000 value iterations
+for t in range(1000):
+    # Loop over all states
+    for s in range(6):
+        # Update value
+        V[s] = max([r+gamma*V[sp] for r,sp in zip(R[s], F[s])])
+"""
+
+###
 
 def q(s,a, gamma):
     current_score = r(s,a)
