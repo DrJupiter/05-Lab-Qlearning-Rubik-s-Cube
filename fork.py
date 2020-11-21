@@ -284,17 +284,69 @@ class State:
     def move(self, action):
         if action == 'left':
             self.turn_left()
+        elif action == 'c_left':
+            for _ in range(3):
+                self.turn_left()
+
         elif action == 'right':
             self.turn_right()
+        elif action == 'c_right':
+            for _ in range(3):
+                self.turn_right()
+
         elif action == 'front':
             self.turn_front()
+        elif action == 'c_front':
+            for _ in range(3):
+                self.turn_front()
+
         elif action == 'back':
             self.turn_back()
+        elif action == 'c_back':
+            for _ in range(3):
+                self.turn_back()
+
         elif action == 'top':
             self.turn_top()
+        elif action == 'c_top':
+            for _ in range(3):
+                self.turn_top()
+
         elif action == 'bottom':
             self.turn_bottom()
+        elif action == 'c_bottom':
+            for _ in range(3):
+                self.turn_bottom()
+
         self.__sides__ = [self.front(), self.back(), self.left(), self.right(), self.top(), self.bottom()]
+
+
+def CC_move(action):
+    if action == 'left':
+        for _ in range(3):
+            cube.move('left')
+    
+    elif action == 'right':
+        for _ in range(3):
+            cube.move('right')
+    
+    elif action == 'front':
+        for _ in range(3):
+            cube.move('front')
+    
+    elif action == 'back':
+        for _ in range(3):
+            cube.move('back')
+    
+    elif action == 'top':
+        for _ in range(3):
+            cube.move('top')
+   
+    elif action == 'bottom':
+        for _ in range(3):
+            cube.move('bottom')
+    
+    return None
 
 # check number of pieces on each side of cube that match color
 # of the middle piece of that side
