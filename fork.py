@@ -1,7 +1,8 @@
 ############# The code in this file is forked from https://github.com/AashrayAnand/rubiks-cube-reinforcement-learning/blob/master/puzzle.py 
 ############# 
 
-
+##### IMPORTED BY US
+import hashlib
 
 import copy
 SIDES = 6 
@@ -96,7 +97,7 @@ class State:
         + str(self.__left__) + "\nRIGHT" + str(self.__right__) + "\nTOP" + str(self.__top__) + "\nBOTTOM" + str(self.__bottom__)
     
     def __hash__(self):
-        return hash(self.__str__())
+        return hashlib.sha256(self.__str__().encode('utf-8')).digest()
 
     # execute a 180 degreee rotation of a given side
     def rotate_side(self, side):

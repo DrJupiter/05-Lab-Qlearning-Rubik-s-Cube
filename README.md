@@ -23,15 +23,15 @@ However each time a move is taken some amount of points is deducted from its sco
 _The table of truth_:rainbow:
 ```Python
 from collections import defaultdict
-default_dict = defaultdict(lambda: [0., 0., 0., 0., 0., 0.])
+default_dict = defaultdict(lambda: [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
 ```
 
-The 6-spaces in the table represent the reward for the rotation of a side 90 degrees clockwise:
-Sides/Spaces = [_left, right, front, back, top, bottom_]
+The first 6-spaces in the table represent the reward for the rotation of a side 90 degrees clockwise. The subsequent spaces represent the reward for a 90 degree rotation counterclockwise:
+Sides/Spaces = [_left, right, front, back, top, bottom, c_left, c_right, c_front, c_back, c_top, c_bottom_]
 
 ### Q-function
 
-$q(s,a) =r(s) + \gamma \cdot \underset{a'}{\text{max}}~q(a',s')$
+$q(s,a) =r(s,a) + \gamma \cdot \underset{a'}{\text{max}}~q(s',a')$ 
 
 Where $a'$ is the action which leads to the highest reward and $s'$ the state achived from that action.
 $\gamma$ is the discount factor, which is a value from 0 up to 1 - $\gamma \in ~]0;1[$.
