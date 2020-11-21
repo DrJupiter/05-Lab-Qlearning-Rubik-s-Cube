@@ -4,7 +4,7 @@
 
 
 import copy
-SIDES = 6
+SIDES = 6 
 import time
 # state object
 class State:
