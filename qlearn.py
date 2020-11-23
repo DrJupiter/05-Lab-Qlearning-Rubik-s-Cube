@@ -1,4 +1,5 @@
 from fork import State, shuffle, move
+import fork
 from collections import defaultdict 
 import hashlib
 import random
@@ -7,6 +8,9 @@ from copy import deepcopy
 
 
 cube = State()
+
+
+
 
 actions = ['left', 'right', 'front', 'back', 'top', 'bottom', 'c_left', 'c_right', 'c_front', 'c_back', 'c_top', 'c_bottom']
 
@@ -19,6 +23,7 @@ q_table = defaultdict(lambda: np.array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 #V = [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]
 
 gamma = 0.9
+epsilon = 7
 
 #def Fat(stat):
 #    nxt_move = []

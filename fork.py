@@ -321,7 +321,7 @@ class State:
 
         self.__sides__ = [self.front(), self.back(), self.left(), self.right(), self.top(), self.bottom()]
 
-
+"""
 def CC_move(action):
     if action == 'left':
         for _ in range(3):
@@ -348,7 +348,7 @@ def CC_move(action):
             cube.move('bottom')
     
     return None
-
+"""
 # check number of pieces on each side of cube that match color
 # of the middle piece of that side
 def num_pieces_correct_side(state):
