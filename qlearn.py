@@ -19,13 +19,13 @@ V = [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]
 
 gamma = 0.9
 
-def Fat(stat):
+def Nxt_move_list(stat):
     nxt_move = []
     for i in range(12)
         nxt_move[i] = current_state.move(actions[i])
+    return nxt_move
 
-
-def Red(stat):
+def Reward_minus(stat):
     if stat == 0:
         return 1
     else:
@@ -34,7 +34,7 @@ def Red(stat):
 
 for t in range(1000):
     # Loop over all states
-    for s in range(6):
+    for s in range(12):
         # Update value
         V[s] = Red(s)+max([gamma*V[sp] for sp in F[s]])
 
