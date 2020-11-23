@@ -18,35 +18,7 @@ q_table = defaultdict(lambda: np.array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 
 
 
-### Somthing somthing
 
-#V = [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]
-
-gamma = 0.9
-epsilon = 7
-
-#def Fat(stat):
-#    nxt_move = []
-#    for i in range(12)
-#        nxt_move[i] = current_state.move(actions[i])
-#
-#
-#def Red(stat):
-#    if stat == 0:
-#        return 1
-#    else:
-#        return -1
-
-
-#for t in range(1000):
-#    # Loop over all states
-#    for s in range(6):
-#        # Update value
-#        V[s] = Red(s)+max([gamma*V[sp] for sp in F[s]])
-#
-#print(V)
-
-###
 
 
 # It measures the value of taking action a in state s
