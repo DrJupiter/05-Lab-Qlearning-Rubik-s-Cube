@@ -19,8 +19,6 @@ q_table = defaultdict(lambda: np.array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 
 ### Somthing somthing
 
-Q = [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]
-
 gamma = 0.9
 epsilon = 7
 
@@ -37,13 +35,7 @@ def explore():
     if odds > epsilon:
         rand_move(cube)
     else:
-        Prio_move(cube)
-
-def Nxt_move_list(stat):
-    nxt_move = []
-    for i in range(12):
-        nxt_move[i] = current_state.move(actions[i])
-    return nxt_move
+        best_move(cube)
 
 def Reward_minus(stat):
     if stat == 0:
@@ -51,7 +43,8 @@ def Reward_minus(stat):
     else:
         return -1
 
-
+def update(cube):
+    update
 
 
 
