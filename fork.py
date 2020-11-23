@@ -4,6 +4,13 @@
 ##### IMPORTED BY US
 import hashlib
 
+def flatten(A):
+    rt = []
+    for i in A:
+        if isinstance(i,list): rt.extend(flatten(i))
+        else: rt.append(i)
+    return rt
+
 import copy
 SIDES = 6 
 import time
@@ -97,7 +104,9 @@ class State:
         + str(self.__left__) + "\nRIGHT" + str(self.__right__) + "\nTOP" + str(self.__top__) + "\nBOTTOM" + str(self.__bottom__)
     
     def __hash__(self):
-        return hashlib.sha256(self.__str__().encode('utf-8')).digest()
+        #return hashlib.sha256(self.__str__().encode('utf-8')).digest
+        #return flatten(str(self.__front__)+str(self.__back__)+ str(self.__left__)+ str(self.__right__)+ str(self.__top__)+ str(self.__bottom__)
+        return str(flatten(self.__sides__))
 
     # execute a 180 degreee rotation of a given side
     def rotate_side(self, side):
@@ -134,7 +143,8 @@ class State:
         self.__back__ = self.replace_side(right_side)
         self.__top__ = self.columns_to_rows(self.__top__, reverse=True)
         self.__bottom__ = self.columns_to_rows(self.__bottom__)   
-    
+
+
     # swap the first row of two given sides, in place
     def swap_first_row(self, side1, side2):
         s1_1 = side1[0]
@@ -320,6 +330,11 @@ class State:
                 self.turn_bottom()
 
         self.__sides__ = [self.front(), self.back(), self.left(), self.right(), self.top(), self.bottom()]
+    
+    def n_move_shuffle(self, n, actions):
+        for _ in range(n):
+            self.move(actions[random.randint(0,len(actions)-1)])
+        return self
 
 """
 def CC_move(action):
