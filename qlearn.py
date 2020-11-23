@@ -15,7 +15,7 @@ q_table = defaultdict(lambda: np.array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 
 ### Somthing somthing
 
-V = [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]
+Q = [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]
 
 gamma = 0.9
 
@@ -36,7 +36,7 @@ for t in range(1000):
     # Loop over all states
     for s in range(12):
         # Update value
-        V[s] = Red(s)+max([gamma*V[sp] for sp in F[s]])
+        Q[s] = Red(s)+max([gamma*Q[sp] for sp in F[s]])
 
 print(V)
 
