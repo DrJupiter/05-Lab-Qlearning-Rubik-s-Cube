@@ -122,8 +122,8 @@ def train(n_moves, iterations):
         if any(element):
             good_paths += 1
             #print(element)
-    print(f"number of paths: {len(aq)}")
-    print(f"good paths: {good_paths}")
+    #print(f"number of paths: {len(aq)}")
+    #print(f"good paths: {good_paths}")
 
 
 def n_move_test(n_moves,test_size):
@@ -139,17 +139,62 @@ def n_move_test(n_moves,test_size):
     return correct
 
 def train_and_test(n_moves, iterations, test_size):
-    print("-------------------------------------------")
-    print(f"iterations = {iterations}")
-    print(f"n_moves = {n_moves}")
-    print(f"test_size = {test_size}")
-    print(" ")
+    #print("-------------------------------------------")
+    #print(f"iterations = {iterations}")
+    #print(f"n_moves = {n_moves}")
+    #print(f"test_size = {test_size}")
+    #print(" ")
     train(n_moves, iterations)
     correct = n_move_test(n_moves,test_size)
-    print(f"Number of correctly solved cubes = {correct}")
-    print(f"% solved: {correct/test_size*100}%")
+    #print(f"Number of correctly solved cubes = {correct}")
+    #print(f"% solved: {correct/test_size*100}%")
 
-    print("-------------------------------------------")
+    #print("-------------------------------------------")
+    return correct/test_size
+
+#print(train_and_test(2,1000,200))
+
+
+"""i=0
+while i < 10:
+
+    i+=1
+    print(i)
+"""
+
+
+def grafing(n_moves, iterations, test_size):
+    procent=0
+    inter = 0
+    while procent < 0.95:
+        procent = train_and_test(n_moves, iterations, test_size)
+        inter += iterations
+    
+    return inter, procent, n_moves
+
+
+
+
+def to_txt(n_moves,iterations,test_size):
+    inter, procent, n_moves = grafing(n_moves,iterations,test_size)
+
+    text_file.write(f"n_moves: {n_moves}, ")
+    text_file.write(f"inter: {inter}, ")
+    text_file.write(f"%: {procent}, \n")
+
     return None
 
-train_and_test(5,20000,1000)
+
+
+
+text_file = open("grafing.txt", "a+")
+
+#to_txt(1,100,200)
+#to_txt(2,100,200)
+#to_txt(3,100,200)
+#to_txt(4,100,200)
+#to_txt(5,100,200)
+to_txt(6,1000,200)
+to_txt(7,1000,200)
+
+text_file.close()

@@ -1,0 +1,7 @@
+n_moves: 1, inter: 100, %: 1.0, 
+n_moves: 2, inter: 300, %: 0.965, 
+n_moves: 3, inter: 1200, %: 0.965, 
+n_moves: 4, inter: 3600, %: 0.955, 
+n_moves: 5, inter: 10400, %: 0.955, 
+n_moves: 6, inter: 50000, %: 0.95, 
+n_moves: 7, inter: 197000, %: 0.95, 
