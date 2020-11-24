@@ -211,7 +211,7 @@ def to_txt(n_moves,iterations,test_size):
 
 #train_and_test(5,20000,1000)
 
-path_to_save_file, depth, steps_pr_test, n_tests = sys.argv[1:]
+path_to_save_file, int(depth), int(steps_pr_test), int(n_tests) = sys.argv[1:]
 
 print(f"Path: {path_to_save_file}<date>.txt \nTraining depth: {depth} \nSteps per test: {steps_pr_test} \nNumber of tests: {n_tests}")
 
