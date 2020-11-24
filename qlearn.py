@@ -127,7 +127,7 @@ def find_max_index_value(iteratable):
 
 def train(n_moves, iterations):
     for _ in range(floor(iterations/100)):
-        for __ in range(100)
+        for __ in range(100):
             cube = pc.Cube()
             cube_shuffle(cube, n_moves)
             for ___ in range(n_moves):
