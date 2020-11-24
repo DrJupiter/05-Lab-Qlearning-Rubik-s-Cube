@@ -1,3 +1,13 @@
+############ GUIDE ################
+"""
+This script requires that you give the following parameters:
+
+path_to_save_file depth_of_cube_shuffle steps_pr_test number_of_tests
+
+"""
+
+
+
 #from fork import State, shuffle, move
 #import fork
 from collections import defaultdict 
@@ -7,12 +17,15 @@ import numpy as np
 from copy import deepcopy
 import pycuber as pc
 
+# FOR FILE SAVING
+from datetime import datetime
+import sys
 
 #actions = ['left', 'right', 'front', 'back', 'top', 'bottom', 'c_left', 'c_right', 'c_front', 'c_back', 'c_top', 'c_bottom']
 #q_table = defaultdict(lambda: np.array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]))
 #actions = ['left', 'right', 'front', 'back', 'top', 'bottom']
 
-new_actions = ["U", "L", "F", "R", "B", "D","U'", "L'", "F'", "R'", "B'", "D'", "M", "M'", "E", "E'", "S", "S'"]
+actions = ["U", "L", "F", "R", "B", "D","U'", "L'", "F'", "R'", "B'", "D'", "M", "M'", "E", "E'", "S", "S'"]
 q_table = defaultdict(lambda: np.array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]))
 
 SOLVED_CUBE = pc.Cube()
@@ -28,9 +41,7 @@ q_action(s) -> q_update(state_key, action_index, copy_of(s'')) -> cumulative_qua
 def cube_shuffle(cube, n):
 
     for _ in range(n):
-        cube(new_actions[random.randint(0, len(new_actions)-1)])
-
-    return cube
+        cube(actions[random.randint(0, len(actions)-1)])
 
 # It measures the value of taking action a in state s
 # which means that we should check the value of each state action pair for an action?
@@ -90,7 +101,7 @@ def cumulative_quality(s, current_quality, gamma=0.5):
     key = str(s)
     action, value = find_max_index_value(q_table[key])
     new_quality = current_quality + value
-    if abs((current_quality-new_quality)/(current_quality+10**(-9))) < 0.1 or !s.__ne__(SOLVED_CUBE):
+    if abs((current_quality-new_quality)/(current_quality+10**(-9))) < 0.1 or (s.__ne__(SOLVED_CUBE) == False):
         return new_quality
     
     return new_quality + gamma*cumulative_quality(s(actions[action]),new_quality)
@@ -125,8 +136,8 @@ def testhash():
 
 def train(n_moves, iterations):
     for _ in range(iterations):
-        cube = State()
-        cube.n_move_shuffle(n_moves, actions)
+        cube = pc.Cube()
+        cube_shuffle(cube, n_moves)
         for _ in range(n_moves):
             q_action(cube)
 
@@ -143,12 +154,12 @@ def train(n_moves, iterations):
 def n_move_test(n_moves,test_size):
     correct = 0
     for _ in range(test_size):
-        test_cube = State()
-        test_cube.n_move_shuffle(n_moves, actions)
-        for __ in range(n_moves): 
+        test_cube = pc.Cube()
+        cube_shuffle(test_cube, n_moves)
+        for _ in range(n_moves): 
             a=np.argmax(q_table[str(test_cube)])
-            test_cube.move(actions[a])
-        if test_cube.isGoalState() == True:
+            test_cube(actions[a])
+        if test_cube.__ne__(SOLVED_CUBE) == False:
             correct += 1
     return correct
 
@@ -200,16 +211,14 @@ def to_txt(n_moves,iterations,test_size):
 
 #train_and_test(5,20000,1000)
 
+path_to_save_file, depth, steps_pr_test, n_tests = sys.argv[1:]
 
+print(f"Path: {path_to_save_file}<date>.txt \nTraining depth: {depth} \nSteps per test: {steps_pr_test} \nNumber of tests: {n_tests}")
 
-text_file = open("grafing.txt", "a+")
+text_file = open(f"{path_to_save_file}{datetime.now()}.txt", "a+")
 
-#to_txt(1,100,200)
-#to_txt(2,100,200)
-#to_txt(3,100,200)
-#to_txt(4,100,200)
-#to_txt(5,100,200)
-to_txt(6,1000,200)
-to_txt(7,1000,200)
+for d in depth:
+    to_txt(d, steps_pr_test, n_tests)
+    print(f"Finished training at depth level {d}")
 
 text_file.close()
