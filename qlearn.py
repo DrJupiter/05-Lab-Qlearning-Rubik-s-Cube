@@ -98,7 +98,7 @@ def r(s):
     if s.__ne__(SOLVED_CUBE):
         return -0.1
     else:
-        return 0.2
+        return 0.4
 
 
 # REFACTORED TO pycuber
@@ -118,7 +118,7 @@ def q_action(s):
 #    return s
 
 # the current_state should represent a (state,action)-pair
-def q_update(key, index, current_state, gamma=0.2):
+def q_update(key, index, current_state, gamma=0.4):
     reward = r(current_state)
     # s, s', men vi vil gerne have reward for s' = (s,a)
     # check with +=
@@ -129,7 +129,7 @@ def q_update(key, index, current_state, gamma=0.2):
 # STAMP OF APPROVAL
 # Remember to pass a copy on the top level
 # NOTE: ACCOUNT FOR DIVISION BY 0
-def cumulative_quality(s, current_quality, gamma=0.2):
+def cumulative_quality(s, current_quality, gamma=0.4):
     key = str(s)
     action, value = find_max_index_value(q_table[key])
     new_quality = current_quality + value
