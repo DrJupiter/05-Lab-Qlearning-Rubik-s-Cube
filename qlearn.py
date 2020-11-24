@@ -121,23 +121,8 @@ def find_max_index_value(iteratable):
             g_index = index
             g_value = value
     return (g_index,g_value)
-    
 
-def testhash():
-    cube = State()
-    print(cube.__hash__())
-    print(q_table[cube.__hash__()])
-    q_table[cube.__hash__()][0] = 1
-    print(q_table[cube.__hash__()])
-
-#testhash()
-
-# def flatten(A):
-#     rt = []
-#     for i in A:
-#         if isinstance(i,list): rt.extend(flatten(i))
-#         else: rt.append(i)
-#     return rt
+####### TRAIN FUNCTIONS
 
 def train(n_moves, iterations):
     for _ in range(iterations):
@@ -145,15 +130,6 @@ def train(n_moves, iterations):
         cube_shuffle(cube, n_moves)
         for _ in range(n_moves):
             q_action(cube)
-
-    aq = list(q_table.values())
-    good_paths = 0
-    for element in aq:
-        if any(element):
-            good_paths += 1
-            #print(element)
-    #print(f"number of paths: {len(aq)}")
-    #print(f"good paths: {good_paths}")
 
 
 def n_move_test(n_moves,test_size):
