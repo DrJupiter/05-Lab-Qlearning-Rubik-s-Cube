@@ -211,10 +211,14 @@ def to_txt(n_moves,iterations,test_size):
 
 #train_and_test(5,20000,1000)
 
-path_to_save_file, int(depth), int(steps_pr_test), int(n_tests) = sys.argv[1:]
+path_to_save_file, depth, steps_pr_test, n_tests = sys.argv[1:]
+depth = int(depth)
+steps_pr_test = int(steps_pr_test)
+n_tests = int(n_tests)
+
 
 print(f"Path: {path_to_save_file}<date>.txt \nTraining depth: {depth} \nSteps per test: {steps_pr_test} \nNumber of tests: {n_tests}")
-
+"""
 text_file = open(f"{path_to_save_file}{datetime.now()}.txt", "a+")
 
 for d in depth:
@@ -222,3 +226,4 @@ for d in depth:
     print(f"Finished training at depth level {d}")
 
 text_file.close()
+"""
