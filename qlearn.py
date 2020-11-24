@@ -49,6 +49,7 @@ def load_q_table():
 actions = ["U", "L", "F", "R", "B", "D","U'", "L'", "F'", "R'", "B'", "D'"]
 q_table = load_q_table()
 print(len(q_table.values()))
+print(np.max(q_table.values()))
 
 SOLVED_CUBE = pc.Cube()
 
@@ -69,7 +70,7 @@ def cube_shuffle(cube, n):
 # which means that we should check the value of each state action pair for an action?
 # No not quite, we use the epsilon_greedy function to determine, if we should
 # Do the action with the current highest quality or try something random
-def epsilon_greedy(epsilon=0.6):
+def epsilon_greedy(epsilon=0.9):
     if np.random.random() <= epsilon:
         return True
     return False
@@ -89,7 +90,7 @@ def r(s):
     if s.__ne__(SOLVED_CUBE):
         return -0.1
     else:
-        return 1
+        return 0.5
 
 # REFACTORED TO pycuber
 def q_action(s):
@@ -194,7 +195,7 @@ def grafing(n_moves, iterations, test_size):
     while procent < 0.95:
         procent = train_and_test(n_moves, iterations, test_size)
         inter += iterations
-        print(f"{procent} at {n_moves} with {inter}      ", flush=True, end="\r")
+        print(f"      {procent} at {n_moves} with {inter}      ", flush=True, end="\r")
         q_file = open(f"q_table", "wb")
         pickle.dump(q_table,q_file)
         q_file.close()
