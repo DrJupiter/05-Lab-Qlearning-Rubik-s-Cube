@@ -221,7 +221,7 @@ print(f"Path: {path_to_save_file}<date>.txt \nTraining depth: {depth} \nSteps pe
 
 text_file = open(f"{path_to_save_file}{datetime.now()}.txt", "a+")
 
-for d in depth:
+for d in range(depth):
     to_txt(d, steps_pr_test, n_tests)
     print(f"Finished training at depth level {d}")
 
