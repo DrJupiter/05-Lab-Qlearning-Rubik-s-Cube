@@ -21,6 +21,8 @@ from math import floor
 # FOR FILE SAVING
 from datetime import datetime
 import sys
+import os
+import pickle
 
 #actions = ['left', 'right', 'front', 'back', 'top', 'bottom', 'c_left', 'c_right', 'c_front', 'c_back', 'c_top', 'c_bottom']
 #q_table = defaultdict(lambda: np.array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]))
@@ -31,8 +33,19 @@ import sys
 #q_table = defaultdict(lambda: np.array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]))
 
 # The holy 12 actions
+def dd():
+    return np.array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]) 
+
+def load_q_table():
+    try:
+        with open("q_table", "rb") as f:
+            return pickle.load(f)
+    except:
+        return defaultdict(dd)
+
 actions = ["U", "L", "F", "R", "B", "D","U'", "L'", "F'", "R'", "B'", "D'"]
-q_table = defaultdict(lambda: np.array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]))
+q_table = load_q_table()
+print(len(q_table.values()))
 
 SOLVED_CUBE = pc.Cube()
 
@@ -53,7 +66,7 @@ def cube_shuffle(cube, n):
 # which means that we should check the value of each state action pair for an action?
 # No not quite, we use the epsilon_greedy function to determine, if we should
 # Do the action with the current highest quality or try something random
-def epsilon_greedy(epsilon=0.9):
+def epsilon_greedy(epsilon=0.6):
     if np.random.random() <= epsilon:
         return True
     return False
@@ -73,7 +86,7 @@ def r(s):
     if s.__ne__(SOLVED_CUBE):
         return -0.1
     else:
-        return 5
+        return 1
 
 # REFACTORED TO pycuber
 def q_action(s):
@@ -179,6 +192,7 @@ def grafing(n_moves, iterations, test_size):
         procent = train_and_test(n_moves, iterations, test_size)
         inter += iterations
         print(f"{procent} at {n_moves} with {inter}      ", flush=True, end="\r")
+        pickle.dump(q_table,q_file)
 
     return inter, procent, n_moves
 
@@ -205,9 +219,12 @@ n_tests = int(n_tests)
 print(f"Path: {path_to_save_file}<date>.txt \nTraining depth: {depth} \nSteps per test: {steps_pr_test} \nNumber of tests: {n_tests}")
 
 text_file = open(f"{path_to_save_file}{datetime.now()}.txt", "a+")
+q_file = open(f"q_table", "wb")
 
 for d in range(depth):
     to_txt(d, steps_pr_test, n_tests)
     print(f"Finished training at depth level {d}")
 
+pickle.dump(q_table,q_file)
+q_file.close()
 text_file.close()
