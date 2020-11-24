@@ -25,8 +25,13 @@ import sys
 #q_table = defaultdict(lambda: np.array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]))
 #actions = ['left', 'right', 'front', 'back', 'top', 'bottom']
 
-actions = ["U", "L", "F", "R", "B", "D","U'", "L'", "F'", "R'", "B'", "D'", "M", "M'", "E", "E'", "S", "S'"]
-q_table = defaultdict(lambda: np.array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]))
+# The unholy 18 actions
+#actions = ["U", "L", "F", "R", "B", "D","U'", "L'", "F'", "R'", "B'", "D'", "M", "M'", "E", "E'", "S", "S'"]
+#q_table = defaultdict(lambda: np.array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]))
+
+# The holy 12 actions
+actions = ["U", "L", "F", "R", "B", "D","U'", "L'", "F'", "R'", "B'", "D'"]
+q_table = defaultdict(lambda: np.array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]))
 
 SOLVED_CUBE = pc.Cube()
 
@@ -67,7 +72,7 @@ def r(s):
     if s.__ne__(SOLVED_CUBE):
         return -0.1
     else:
-        return 1
+        return 5
 
 # REFACTORED TO pycuber
 def q_action(s):
@@ -194,7 +199,8 @@ def grafing(n_moves, iterations, test_size):
     while procent < 0.95:
         procent = train_and_test(n_moves, iterations, test_size)
         inter += iterations
-    
+        print(f"{procent} at {n_moves} with {inter}      ", flush=True, end="\r")
+
     return inter, procent, n_moves
 
 
