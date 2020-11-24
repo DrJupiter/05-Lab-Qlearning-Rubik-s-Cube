@@ -1,15 +1,21 @@
-from fork import State, shuffle, move
-import fork
+#from fork import State, shuffle, move
+#import fork
 from collections import defaultdict 
 import hashlib
 import random
 import numpy as np
 from copy import deepcopy
+import pycuber as pc
+
 
 #actions = ['left', 'right', 'front', 'back', 'top', 'bottom', 'c_left', 'c_right', 'c_front', 'c_back', 'c_top', 'c_bottom']
 #q_table = defaultdict(lambda: np.array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]))
-actions = ['left', 'right', 'front', 'back', 'top', 'bottom']
-q_table = defaultdict(lambda: np.array([0., 0., 0., 0., 0., 0.]))
+#actions = ['left', 'right', 'front', 'back', 'top', 'bottom']
+
+new_actions = ["U", "L", "F", "R", "B", "D","U'", "L'", "F'", "R'", "B'", "D'", "M", "M'", "E", "E'", "S", "S'"]
+q_table = defaultdict(lambda: np.array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]))
+
+SOLVED_CUBE = pc.Cube()
 
 """
 q_action(s) -> q_update(state_key, action_index, copy_of(s'')) -> cumulative_quality(copy_of(s''), 0)
@@ -19,6 +25,12 @@ q_action(s) -> q_update(state_key, action_index, copy_of(s'')) -> cumulative_qua
                                                                                     hvor vi er lige nu i forhold til q_action(s)
 """
 
+def cube_shuffle(cube, n):
+
+    for _ in range(n):
+        cube(new_actions[random.randint(0, len(new_actions)-1)])
+
+    return cube
 
 # It measures the value of taking action a in state s
 # which means that we should check the value of each state action pair for an action?
@@ -38,24 +50,27 @@ def epsilon_greedy(epsilon=0.9):
 # NOTE: WE COULD MAKE A TRAIN REWARD FUNCTION THAT GIVES A LARGE PENALTY
 # IF WE EXCEED THE MIN_AMOUNT_OF_SOLVE_STEPS: r_train(s, a, BOOL_TRAIN, OPTIMAL_STEP)
 
-def r(s):
-    if s.isGoalState():
-        return 1
-    else:
-        return -0.1
-    
 
+# REFACTORED TO pycuber
+def r(s):
+    if s.__ne__(SOLVED_CUBE):
+        return -0.1
+    else:
+        return 1
+
+# REFACTORED TO pycuber
 def q_action(s):
+    cube_hash = str(s)
     if epsilon_greedy():
         a = random.randint(0,len(actions)-1)
     else:
-        a = np.argmax(q_table[s.__hash__()])
+        a = np.argmax(q_table[cube_hash])
     # We store the key of the previous state
-    cube_hash = s.__hash__()
+
     # the state s is mutated by taking the action determined by the epsilon_greedy() function call
-    s.move(actions[a])
+    s(actions[a])
     # We then pass the q_update function the key: cube_hash, index into quality array at key: a, current_state: s
-    q_update(cube_hash, a, deepcopy(s))
+    q_update(cube_hash, a, s.copy())
 # Maybe the return isn't needed
 #    return s
 
@@ -68,18 +83,17 @@ def q_update(key, index, current_state, gamma=0.5):
     q_table[key][index] = reward + gamma * cumulative_quality(current_state, 0)
 
 
-
 # STAMP OF APPROVAL
 # Remember to pass a copy on the top level
 # NOTE: ACCOUNT FOR DIVISION BY 0
 def cumulative_quality(s, current_quality, gamma=0.5):
-    key = s.__hash__()
+    key = str(s)
     action, value = find_max_index_value(q_table[key])
     new_quality = current_quality + value
-    if abs((current_quality-new_quality)/(current_quality+10**(-9))) < 0.1 or s.isGoalState():
+    if abs((current_quality-new_quality)/(current_quality+10**(-9))) < 0.1 or !s.__ne__(SOLVED_CUBE):
         return new_quality
     
-    return new_quality + gamma*cumulative_quality(s.move(actions[action]),new_quality)
+    return new_quality + gamma*cumulative_quality(s(actions[action]),new_quality)
 
 
 # STAMP OF APPROVAL
@@ -132,7 +146,7 @@ def n_move_test(n_moves,test_size):
         test_cube = State()
         test_cube.n_move_shuffle(n_moves, actions)
         for __ in range(n_moves): 
-            a=np.argmax(q_table[test_cube.__hash__()])
+            a=np.argmax(q_table[str(test_cube)])
             test_cube.move(actions[a])
         if test_cube.isGoalState() == True:
             correct += 1
@@ -152,4 +166,4 @@ def train_and_test(n_moves, iterations, test_size):
     print("-------------------------------------------")
     return None
 
-train_and_test(5,20000,1000)
+#train_and_test(5,20000,1000)
