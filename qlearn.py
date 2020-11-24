@@ -48,7 +48,7 @@ def load_q_table():
 
 actions = ["U", "L", "F", "R", "B", "D","U'", "L'", "F'", "R'", "B'", "D'"]
 q_table = load_q_table()
-print(len(q_table.values()))
+print((q_table.values()))
 
 SOLVED_CUBE = pc.Cube()
 
