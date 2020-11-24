@@ -109,18 +109,47 @@ def testhash():
 #         else: rt.append(i)
 #     return rt
 
-for _ in range(100000):
-    cube = State()
-    cube.n_move_shuffle(2, actions)
-    for _ in range(2):
-        q_action(cube)
+def train(n_moves, iterations):
+    for _ in range(iterations):
+        cube = State()
+        cube.n_move_shuffle(n_moves, actions)
+        for _ in range(n_moves):
+            q_action(cube)
 
-aq = list(q_table.values())
-good_paths = 0
-for element in aq:
-    if any(element):
-        good_paths += 1
-        print(element)
-print(f"number of paths: {len(aq)}")
-print(f"good paths: {good_paths}")
+    aq = list(q_table.values())
+    good_paths = 0
+    for element in aq:
+        if any(element):
+            good_paths += 1
+            #print(element)
+    print(f"number of paths: {len(aq)}")
+    print(f"good paths: {good_paths}")
 
+
+def n_move_test(n_moves,test_size):
+    correct = 0
+    for _ in range(test_size):
+        test_cube = State()
+        test_cube.n_move_shuffle(n_moves, actions)
+        for __ in range(n_moves): 
+            a=np.argmax(q_table[test_cube.__hash__()])
+            test_cube.move(actions[a])
+        if test_cube.isGoalState() == True:
+            correct += 1
+    return correct
+
+def train_and_test(n_moves, iterations, test_size):
+    print("-------------------------------------------")
+    print(f"iterations = {iterations}")
+    print(f"n_moves = {n_moves}")
+    print(f"test_size = {test_size}")
+    print(" ")
+    train(n_moves, iterations)
+    correct = n_move_test(n_moves,test_size)
+    print(f"Number of correctly solved cubes = {correct}")
+    print(f"% solved: {correct/test_size*100}%")
+
+    print("-------------------------------------------")
+    return None
+
+train_and_test(5,20000,1000)
