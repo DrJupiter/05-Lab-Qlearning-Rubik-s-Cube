@@ -38,17 +38,17 @@ def dd():
 
 def load_q_table():
     try:
-        with open("q_table", "rb") as f:
-            tmp = pickle.load(f)
-            f.close()
-            print("Succesfully loaded q_table")
-            return tmp 
+        f = open("q_table", "rb")
+        tmp = pickle.load(f)
+        f.close()
+        print("Succesfully loaded q_table")
+        return tmp 
     except:
         return defaultdict(dd)
 
 actions = ["U", "L", "F", "R", "B", "D","U'", "L'", "F'", "R'", "B'", "D'"]
 q_table = load_q_table()
-print((q_table.values()))
+print(len(q_table.values()))
 
 SOLVED_CUBE = pc.Cube()
 
@@ -195,7 +195,9 @@ def grafing(n_moves, iterations, test_size):
         procent = train_and_test(n_moves, iterations, test_size)
         inter += iterations
         print(f"{procent} at {n_moves} with {inter}      ", flush=True, end="\r")
+        q_file = open(f"q_table", "wb")
         pickle.dump(q_table,q_file)
+        q_file.close()
 
     return inter, procent, n_moves
 
@@ -222,12 +224,12 @@ n_tests = int(n_tests)
 print(f"Path: {path_to_save_file}<date>.txt \nTraining depth: {depth} \nSteps per test: {steps_pr_test} \nNumber of tests: {n_tests}")
 
 text_file = open(f"{path_to_save_file}{datetime.now()}.txt", "a+")
-q_file = open(f"q_table", "wb")
 
 for d in range(depth):
     to_txt(d, steps_pr_test, n_tests)
     print(f"Finished training at depth level {d}")
 
+q_file = open(f"q_table", "wb")
 pickle.dump(q_table,q_file)
 q_file.close()
 text_file.close()
