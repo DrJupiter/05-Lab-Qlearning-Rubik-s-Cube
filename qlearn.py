@@ -39,7 +39,10 @@ def dd():
 def load_q_table():
     try:
         with open("q_table", "rb") as f:
-            return pickle.load(f)
+            tmp = pickle.load(f)
+            f.close()
+            print("Succesfully loaded q_table")
+            return tmp 
     except:
         return defaultdict(dd)
 
