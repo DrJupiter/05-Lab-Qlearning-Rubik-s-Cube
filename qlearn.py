@@ -16,6 +16,7 @@ import random
 import numpy as np
 from copy import deepcopy
 import pycuber as pc
+from math import floor
 
 # FOR FILE SAVING
 from datetime import datetime
@@ -125,11 +126,12 @@ def find_max_index_value(iteratable):
 ####### TRAIN FUNCTIONS
 
 def train(n_moves, iterations):
-    for _ in range(iterations):
-        cube = pc.Cube()
-        cube_shuffle(cube, n_moves)
-        for _ in range(n_moves):
-            q_action(cube)
+    for _ in range(floor(iterations/100)):
+        for __ in range(100)
+            cube = pc.Cube()
+            cube_shuffle(cube, n_moves)
+            for ___ in range(n_moves):
+                q_action(cube)
 
 
 def n_move_test(n_moves,test_size):
@@ -137,7 +139,7 @@ def n_move_test(n_moves,test_size):
     for _ in range(test_size):
         test_cube = pc.Cube()
         cube_shuffle(test_cube, n_moves)
-        for _ in range(n_moves): 
+        for __ in range(n_moves): 
             a=np.argmax(q_table[str(test_cube)])
             test_cube(actions[a])
         if test_cube.__ne__(SOLVED_CUBE) == False:
