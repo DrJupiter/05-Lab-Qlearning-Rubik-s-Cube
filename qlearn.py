@@ -86,6 +86,14 @@ def epsilon_greedy(epsilon=0.9):
 
 
 # REFACTORED TO pycuber
+#def r(s):
+#    if s.__ne__(SOLVED_CUBE):
+#        return -0.1
+#    else:
+#        return 0.5
+
+
+# REFACTORED TO pycuber
 def r(s):
     if s.__ne__(SOLVED_CUBE):
         return -0.1
@@ -148,7 +156,7 @@ def train(n_moves, iterations):
         for __ in range(100):
             cube = pc.Cube()
             cube_shuffle(cube, n_moves)
-            for ___ in range(n_moves):
+            for ___ in range(1):
                 q_action(cube)
 
 
@@ -170,6 +178,7 @@ def train_and_test(n_moves, iterations, test_size):
     #print(f"n_moves = {n_moves}")
     #print(f"test_size = {test_size}")
     #print(" ")
+    print(f"train({n_moves},{iterations})")
     train(n_moves, iterations)
     correct = n_move_test(n_moves,test_size)
     #print(f"Number of correctly solved cubes = {correct}")
@@ -234,3 +243,5 @@ q_file = open(f"q_table", "wb")
 pickle.dump(q_table,q_file)
 q_file.close()
 text_file.close()
+
+print(n_move_test(depth-1, 2000)/2000)
