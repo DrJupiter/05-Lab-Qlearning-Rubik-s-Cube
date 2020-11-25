@@ -206,10 +206,13 @@ def grafing(n_moves, iterations, test_size):
         procent = train_and_test(n_moves, iterations, test_size)
         inter += iterations
         print(f"      {procent} at {n_moves} with {inter}      ", flush=True, end="\r")
-        q_file = open(f"q_table", "wb")
+        q_file = open(f"q_table_{n_moves}", "wb")
         pickle.dump(q_table,q_file)
         q_file.close()
-
+        if inter % 10000 == 0:
+            for i in range(n_moves):
+                print(f"Updating depth-level: {i}          ")
+                train(i, iterations)
     return inter, procent, n_moves
 
 
@@ -246,3 +249,17 @@ q_file.close()
 text_file.close()
 
 print(n_move_test(depth-1, 2000)/2000)
+
+"""
+Things to try incase of platou :
+
+When a platou is detected go back to depth level 0 and update all values.
+The cause of the platou might be do to inaccurate values in previous cells.
+By updating them, the inaccurate values are hopefully removed.
+
+The number of steps in the update should be len(actions)**n, where n is the current level of depth
+
+
+
+
+"""
