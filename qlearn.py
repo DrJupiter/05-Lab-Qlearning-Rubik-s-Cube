@@ -24,13 +24,6 @@ import sys
 import os
 import pickle
 
-#actions = ['left', 'right', 'front', 'back', 'top', 'bottom', 'c_left', 'c_right', 'c_front', 'c_back', 'c_top', 'c_bottom']
-#q_table = defaultdict(lambda: np.array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]))
-#actions = ['left', 'right', 'front', 'back', 'top', 'bottom']
-
-# The unholy 18 actions
-#actions = ["U", "L", "F", "R", "B", "D","U'", "L'", "F'", "R'", "B'", "D'", "M", "M'", "E", "E'", "S", "S'"]
-#q_table = defaultdict(lambda: np.array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]))
 
 # The holy 12 actions
 def dd():
@@ -66,42 +59,17 @@ def cube_shuffle(cube, n):
     for _ in range(n):
         cube(actions[random.randint(0, len(actions)-1)])
 
-# It measures the value of taking action a in state s
-# which means that we should check the value of each state action pair for an action?
-# No not quite, we use the epsilon_greedy function to determine, if we should
-# Do the action with the current highest quality or try something random
 def epsilon_greedy(epsilon=0.9):
     if np.random.random() <= epsilon:
         return True
     return False
-# So from an initial state s_initial we look at our available actions
-# which in our case is a constant list of actions, which can be found in the actions list
-# We then call our epsilon function to see whether or not we should take a random action or the best possible action
-# We then take the action and then update the q_table value for that action for the now previous state
-# The update is based on checking if the new state is the goal state and then continuously adding
-# the values from the best state after the new state
 
-# NOTE: WE COULD MAKE A TRAIN REWARD FUNCTION THAT GIVES A LARGE PENALTY
-# IF WE EXCEED THE MIN_AMOUNT_OF_SOLVE_STEPS: r_train(s, a, BOOL_TRAIN, OPTIMAL_STEP)
-
-
-# REFACTORED TO pycuber
-#def r(s):
-#    if s.__ne__(SOLVED_CUBE):
-#        return -0.1
-#    else:
-#        return 0.5
-
-
-# REFACTORED TO pycuber
 def r(s):
     if s.__ne__(SOLVED_CUBE):
         return -0.1
     else:
         return 0.4
 
-
-# REFACTORED TO pycuber
 def q_action(s):
     cube_hash = str(s)
     if epsilon_greedy():
@@ -127,8 +95,6 @@ def q_update(key, index, current_state, gamma=0.4):
 
 
 # STAMP OF APPROVAL
-# Remember to pass a copy on the top level
-# NOTE: ACCOUNT FOR DIVISION BY 0
 def cumulative_quality(s, current_quality, gamma=0.4):
     key = str(s)
     action, value = find_max_index_value(q_table[key])
@@ -174,29 +140,10 @@ def n_move_test(n_moves,test_size):
     return correct
 
 def train_and_test(n_moves, iterations, test_size):
-    #print("-------------------------------------------")
-    #print(f"iterations = {iterations}")
-    #print(f"n_moves = {n_moves}")
-    #print(f"test_size = {test_size}")
-    #print(" ")
-    #print(f"train({n_moves},{iterations})")
     train(n_moves, iterations)
     correct = n_move_test(n_moves,test_size)
-    #print(f"Number of correctly solved cubes = {correct}")
-    #print(f"% solved: {correct/test_size*100}%")
 
-    #print("-------------------------------------------")
     return correct/test_size
-
-#print(train_and_test(2,1000,200))
-
-
-"""i=0
-while i < 10:
-
-    i+=1
-    print(i)
-"""
 
 
 def grafing(n_moves, iterations, test_size):
@@ -227,8 +174,6 @@ def to_txt(n_moves,iterations,test_size):
 
     return None
 
-#train_and_test(5,20000,1000)
-
 path_to_save_file, depth, steps_pr_test, n_tests = sys.argv[1:]
 depth = int(depth)
 steps_pr_test = int(steps_pr_test)
@@ -249,17 +194,3 @@ q_file.close()
 text_file.close()
 
 print(n_move_test(depth-1, 2000)/2000)
-
-"""
-Things to try incase of platou :
-
-When a platou is detected go back to depth level 0 and update all values.
-The cause of the platou might be do to inaccurate values in previous cells.
-By updating them, the inaccurate values are hopefully removed.
-
-The number of steps in the update should be len(actions)**n, where n is the current level of depth
-
-
-
-
-"""
