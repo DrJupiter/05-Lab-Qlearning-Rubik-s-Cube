@@ -194,3 +194,4 @@ q_file.close()
 text_file.close()
 
 print(n_move_test(depth-1, 2000)/2000)
+kk

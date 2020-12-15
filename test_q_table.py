@@ -1,6 +1,7 @@
 import numpy as np, pycuber as pc, random
 import pickle
 import sys
+import time
 
 def dd():
     return np.array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]) 
@@ -31,4 +32,66 @@ def n_move_test(n_moves,test_size):
             correct += 1
     return correct
 
-print(n_move_test(int(sys.argv[1])-1, int(sys.argv[2]))/int(sys.argv[2]))
+CYELLOW = '\033[43m'
+CSKYBLUE = '\033[44m'
+CGREEN = '\033[41m'
+CEND = '\033[0m'
+
+W = """
+           .---.
+          /. ./| 
+      .--'.  ' ; 
+     /__./ \ : | 
+ .--'.  '   \' . 
+/___/ \ |    ' ' 
+;   \  \;      : 
+ \   ;  `      | 
+  .   \    .\  ; 
+   \   \   ' \ | 
+    :   '  |--"  
+     \   \ ;     
+      '---"\r      
+"""                 
+O = """\r             
+    ,----..
+   /   /   \ 
+  /   .     :  
+ .   /   ;.  \ 
+.   ;   /  ` ; 
+;   |  ; \ ; | 
+|   :  | ; | ' 
+.   |  ' ' ' : 
+'   ;  \; /  | 
+ \   \  ',  /  
+  ;   :    /   
+   \   \ .'    
+    `---`\r"""
+print(f"{W}{O}{W}")
+                                                 
+                                            
+
+def display_solve(n_moves):
+    cube = pc.Cube()
+    print(chr(27) + "[2J")
+    print(cube.__repr__())
+    print("Shuffling cube")
+    time.sleep(1)
+    cube_shuffle(cube, n_moves)
+    shuffled_cube = cube.copy()
+    print(cube.__repr__())
+    print("Ready?")
+    time.sleep(3)
+    n = 8
+    for _ in range(n_moves):
+        a = np.argmax(q_table[str(cube)])
+        cube(actions[a])
+        print(chr(27) + "[1J")
+        print("From\n{}\n{}{}\\/\nTo\n{}".format(shuffled_cube.__repr__(),f"{' '*n}||\n"*n,' '*n, cube.__repr__()))
+        time.sleep(1)
+#    print("From\n{}\n{}{}\\/\nTo\n{}".format(shuffled_cube.__repr__(),f"{' '*n}||\n"*n,' '*n, cube.__repr__()))
+    print(f"\33[30m{CYELLOW}{W}{CSKYBLUE}{O}{CGREEN}{W}{CEND}")
+        
+
+#print(n_move_test(int(sys.argv[1])-1, int(sys.argv[2]))/int(sys.argv[2]))
+display_solve(int(sys.argv[1]))
+
